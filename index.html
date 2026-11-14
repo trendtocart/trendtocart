@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Trend To Cart | Find what's worth it</title>
+<meta name="description" content="Trending products picked for you. Add to cart and order on WhatsApp with Trend To Cart.">
+<meta name="theme-color" content="#ff2d75">
+<link rel="icon" href="images/logo.jpeg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --pink:#ff2d75;--orange:#ff7a45;--ink:#141418;--muted:#66666f;
+  --blush:#fff1f5;--paper:#fffafb;--line:#f3dce4;
+  --grad:linear-gradient(135deg,#ff2d75,#ff7a45);
+  --display:"Bricolage Grotesque","DM Sans",system-ui,sans-serif;
+  --body:"DM Sans",system-ui,sans-serif;
+}
+*{box-sizing:border-box;margin:0}
+html{scroll-behavior:smooth;scroll-padding-top:120px}
+body{font-family:var(--body);color:var(--ink);background:var(--paper);line-height:1.6;-webkit-text-size-adjust:100%}
+img{max-width:100%;display:block}
+a{color:inherit}
+h1,h2,h3,h4{font-family:var(--display);line-height:1.15}
+:focus-visible{outline:3px solid var(--pink);outline-offset:2px}
+[hidden]{display:none!important}
+.wrap{width:min(1180px,100% - 32px);margin-inline:auto}
+
+/* Header */
+.top{position:sticky;top:0;z-index:20;background:#fff;border-bottom:1px solid var(--line)}
+.bar{display:flex;align-items:center;gap:14px;padding:10px 0}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none;font:700 1.15rem var(--display);white-space:nowrap}
+.brand img{width:46px;height:46px;border-radius:50%}
+#search{flex:1;min-width:0;padding:11px 18px;border:1.5px solid var(--line);border-radius:999px;font:inherit;background:var(--blush)}
+#search:focus{border-color:var(--pink);outline:none;background:#fff}
+.cartbtn{border:0;background:var(--ink);color:#fff;font:600 .95rem var(--body);padding:11px 18px;border-radius:999px;cursor:pointer;white-space:nowrap}
+.cartbtn b{background:var(--pink);color:#fff;border-radius:999px;padding:1px 9px;margin-left:6px}
+.links{display:flex;gap:22px;padding:0 0 10px;font-size:.9rem;font-weight:500;overflow-x:auto}
+.links a{text-decoration:none;color:var(--muted);white-space:nowrap}
+.links a:hover{color:var(--pink)}
+
+/* Hero */
+.hero{background:var(--ink);color:#fff;padding:clamp(40px,7vw,88px) 0 clamp(60px,9vw,110px);overflow:hidden}
+.herogrid{display:grid;grid-template-columns:1.3fr 1fr;gap:32px;align-items:center}
+.hero h1{font-size:clamp(2.6rem,7.5vw,5.4rem);font-weight:800;letter-spacing:-.03em;max-width:11ch}
+.hero p{margin:18px 0 28px;max-width:44ch;font-size:1.1rem;color:#e9e1e5}
+.heroacts{display:flex;flex-wrap:wrap;gap:12px}
+.herologo{width:min(380px,100%);justify-self:center;border-radius:50%;box-shadow:0 0 0 8px rgba(255,45,117,.25),0 0 0 18px rgba(255,122,69,.12)}
+
+/* Buttons */
+.btn{display:inline-block;border:0;background:var(--grad);color:#fff;font:600 .9rem var(--body);padding:11px 18px;border-radius:10px;cursor:pointer;text-decoration:none;text-align:center}
+.btn.solid{background:var(--grad);padding:14px 30px;font-size:1rem}
+.btn.outline{background:transparent;color:#fff;box-shadow:inset 0 0 0 1.5px #fff;padding:14px 26px;font-size:1rem}
+.btn.ghost{background:#fff;color:var(--pink);box-shadow:inset 0 0 0 1.5px var(--pink)}
+.btn.wa{width:100%;background:#1faa59;padding:14px;font-size:1rem}
+.btn:disabled{background:#eee;color:#999;box-shadow:none;cursor:not-allowed}
+.btn:hover:not(:disabled){filter:brightness(.94)}
+
+/* Perks */
+.perks{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:-34px;position:relative}
+.perks div{background:#fff;border:1px solid var(--line);border-radius:12px;padding:16px 18px}
+.perks b{display:block;font:700 1rem var(--display)}
+.perks span{font-size:.85rem;color:var(--muted)}
+
+/* Sections */
+.sec{padding:56px 0 6px}
+h2{font-size:clamp(1.5rem,3.2vw,2.1rem);font-weight:700;letter-spacing:-.01em;margin-bottom:22px}
+.cats{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:14px}
+.cattile{border:0;text-align:left;padding:22px 18px;border-radius:12px;background:var(--blush);font:700 1.05rem var(--display);color:var(--ink);cursor:pointer;border-left:5px solid var(--pink)}
+.cattile small{display:block;font:400 .8rem var(--body);color:var(--muted)}
+.cattile:hover{background:#ffe0ea}
+
+.tools{display:flex;flex-wrap:wrap;gap:12px;justify-content:space-between;align-items:center;margin-bottom:20px}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{border:1.5px solid var(--line);background:#fff;padding:7px 16px;border-radius:999px;font:500 .85rem var(--body);cursor:pointer}
+.chip[aria-pressed=true]{background:var(--ink);color:#fff;border-color:var(--ink)}
+.sortl{font-size:.85rem;color:var(--muted)}
+select,input,textarea{font:inherit}
+.sortl select{padding:8px 10px;border:1.5px solid var(--line);border-radius:8px;margin-left:6px;background:#fff}
+
+/* Product cards */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:20px}
+.card{border:1px solid var(--line);border-radius:12px;overflow:hidden;background:#fff;display:flex;flex-direction:column}
+.thumb{position:relative;display:block;width:100%;border:0;padding:0;background:var(--blush);cursor:pointer;aspect-ratio:1;overflow:hidden}
+.thumb img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.tag,.off{position:absolute;top:10px;font-size:.74rem;font-weight:700;padding:3px 10px;border-radius:999px}
+.tag{left:10px;background:var(--ink);color:#fff}
+.off{right:10px;background:var(--pink);color:#fff}
+.info{padding:14px;display:flex;flex-direction:column;gap:6px;flex:1}
+.cat{font-size:.76rem;color:var(--muted)}
+.info h3{font-size:1.05rem}
+.sd{font-size:.86rem;color:var(--muted)}
+.price b{font:700 1.2rem var(--display);color:var(--pink)}
+.price s{margin-left:8px;color:var(--muted);font-size:.9rem}
+.var{padding:8px;border:1.5px solid var(--line);border-radius:8px;background:#fff}
+.acts{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:auto;padding-top:6px}
+.acts .btn{padding:10px 6px;font-size:.84rem}
+.empty{padding:30px;text-align:center;color:var(--muted)}
+
+/* How to order: a real sequence, so numbered */
+.steps{list-style:none;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:14px;counter-reset:s}
+.steps li{counter-increment:s;background:#fff;border:1px solid var(--line);border-radius:12px;padding:18px 18px 18px 60px;position:relative}
+.steps li::before{content:counter(s);position:absolute;left:16px;top:16px;width:30px;height:30px;border-radius:50%;background:var(--pink);color:#fff;font:700 .95rem var(--display);display:grid;place-items:center}
+.steps b{display:block;font:700 1rem var(--display)}
+.steps span{font-size:.88rem;color:var(--muted)}
+
+/* Reviews and FAQ */
+.reviews{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px}
+.reviews blockquote{background:var(--blush);padding:20px;border-radius:12px}
+.reviews cite{display:block;margin-top:10px;font-weight:700;font-style:normal;font-size:.9rem}
+details{background:#fff;border:1px solid var(--line);border-radius:10px;padding:14px 18px;margin-bottom:10px}
+summary{font-weight:600;cursor:pointer}
+details p{margin-top:8px;color:var(--muted);max-width:70ch}
+
+/* Footer */
+footer{margin-top:64px;background:var(--ink);color:#ddd;padding:44px 0 90px}
+.fgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:28px}
+.flogo{width:84px;border-radius:50%;margin-bottom:10px}
+footer h4{color:#fff;margin-bottom:8px}
+footer a{text-decoration:none}
+footer a:hover{color:var(--orange)}
+.copy{text-align:center;font-size:.8rem;margin-top:30px;color:#999}
+
+/* Floating WhatsApp */
+.wafloat{position:fixed;right:18px;bottom:18px;width:56px;height:56px;border-radius:50%;background:#1faa59;display:grid;place-items:center;box-shadow:0 6px 18px rgba(0,0,0,.25);z-index:30}
+
+/* Dialogs */
+dialog{border:0;border-radius:14px;padding:20px;width:min(480px,94vw);max-height:92vh;overflow:auto}
+dialog::backdrop{background:rgba(0,0,0,.55)}
+dialog.side{margin:0 0 0 auto;height:100vh;max-height:100vh;border-radius:0;width:min(420px,100vw)}
+dialog.wide{width:min(860px,94vw);position:relative}
+.dh{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
+.x{border:0;background:none;font-size:2rem;line-height:1;cursor:pointer;color:var(--muted)}
+.x.abs{position:absolute;top:10px;right:14px;z-index:2}
+.line{display:grid;grid-template-columns:64px 1fr auto;gap:12px;align-items:center;padding:12px 0;border-bottom:1px solid var(--line);font-size:.9rem}
+.line img{width:64px;height:64px;object-fit:cover;border-radius:8px}
+.line small{color:var(--muted);display:block}
+.qty{display:inline-flex;align-items:center;gap:8px;margin-top:4px}
+.qty button{width:26px;height:26px;border-radius:50%;border:1.5px solid var(--line);background:#fff;cursor:pointer}
+.link{border:0;background:none;color:var(--pink);cursor:pointer;font:inherit;font-size:.8rem}
+.total{display:flex;justify-content:space-between;font:700 1.15rem var(--display);padding:16px 0}
+.sum{background:var(--blush);padding:12px 14px;border-radius:10px;margin-bottom:14px;font-size:.88rem}
+.sum p{display:flex;justify-content:space-between;gap:10px}
+form label{display:block;font-size:.85rem;font-weight:500;margin-bottom:12px}
+form input,form textarea{display:block;width:100%;margin-top:4px;padding:10px 12px;border:1.5px solid var(--line);border-radius:8px}
+form input:focus,form textarea:focus{border-color:var(--pink);outline:none}
+.note{font-size:.78rem;color:var(--muted);margin-top:10px;text-align:center}
+.det{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+.det .main{border-radius:12px;width:100%;aspect-ratio:1;object-fit:cover;background:var(--blush)}
+.thumbs{display:flex;gap:8px;margin-top:8px}
+.thumbs img{width:56px;height:56px;object-fit:cover;border-radius:8px;cursor:pointer;border:2px solid transparent}
+.thumbs img.on{border-color:var(--pink)}
+.det h3{font-size:1.5rem}
+.det .fd{margin:12px 0;color:var(--muted);font-size:.93rem}
+.toast{position:fixed;left:50%;bottom:24px;transform:translate(-50%,30px);background:var(--ink);color:#fff;padding:12px 20px;border-radius:999px;opacity:0;pointer-events:none;transition:.25s;z-index:50;font-size:.9rem}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+
+@media(max-width:760px){
+  .herogrid{grid-template-columns:1fr}
+  .herologo{width:200px;order:-1;justify-self:start}
+  .perks{grid-template-columns:1fr;margin-top:-22px}
+  .det{grid-template-columns:1fr}
+  .brand span{display:none}
+  .grid{grid-template-columns:repeat(2,1fr);gap:12px}
+  .acts{grid-template-columns:1fr}
+}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.toast{transition:none}}
+
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap bar">
+    <a class="brand" href="#home"><img src="images/logo.jpeg" alt="Trend To Cart logo"><span>Trend To Cart</span></a>
+    <input id="search" type="search" placeholder="Search products" aria-label="Search products">
+    <button id="cartBtn" class="cartbtn" aria-label="Open cart">Cart <b id="cartCount">0</b></button>
+  </div>
+  <nav class="wrap links" aria-label="Sections">
+    <a href="#categories">Categories</a>
+    <a href="#shop">All products</a>
+    <a href="#how">How to order</a>
+    <a href="#faq">Policies</a>
+    <a href="#contact">Contact</a>
+  </nav>
+</header>
+
+<main>
+  <section id="home" class="hero">
+    <div class="wrap herogrid">
+      <div class="herotext">
+        <h1>Find what's worth it.</h1>
+        <p>Trending products, hand-picked. Fill your cart, send one WhatsApp message, and we handle the rest.</p>
+        <div class="heroacts">
+          <a class="btn solid" href="#shop">Shop now</a>
+          <a id="heroWa" class="btn outline" href="#" target="_blank" rel="noopener">Chat on WhatsApp</a>
+        </div>
+      </div>
+      <img class="herologo" src="images/logo.jpeg" alt="">
+    </div>
+  </section>
+
+  <section class="wrap perks" aria-label="Why shop with us">
+    <div><b>One WhatsApp message</b><span>Your whole cart in a single order</span></div>
+    <div><b>Prepaid orders</b><span>Pay by UPI after we confirm</span></div>
+    <div><b>New picks often</b><span>Trending products added regularly</span></div>
+  </section>
+
+  <section id="categories" class="wrap sec"><h2>Shop by category</h2><div id="catGrid" class="cats"></div></section>
+
+  <section id="featured" class="wrap sec"><h2>Best sellers</h2><div id="featGrid" class="grid"></div></section>
+
+  <section id="shop" class="wrap sec">
+    <h2>All products</h2>
+    <div class="tools">
+      <div id="chips" class="chips" role="group" aria-label="Filter by category"></div>
+      <label class="sortl">Sort by
+        <select id="sort">
+          <option value="default">Featured</option>
+          <option value="low">Price: low to high</option>
+          <option value="high">Price: high to low</option>
+          <option value="az">Name: A to Z</option>
+        </select>
+      </label>
+    </div>
+    <div id="grid" class="grid"></div>
+    <p id="empty" class="empty" hidden>No products match your search. Try another word or pick a different category.</p>
+  </section>
+
+  <section id="how" class="wrap sec">
+    <h2>How to order</h2>
+    <ol class="steps">
+      <li><b>Add to cart</b><span>Pick your products and options.</span></li>
+      <li><b>Checkout</b><span>Enter your name, phone number and address.</span></li>
+      <li><b>Send on WhatsApp</b><span>Your order message is ready to send.</span></li>
+      <li><b>Pay by UPI</b><span>We share payment details and confirm your order.</span></li>
+    </ol>
+  </section>
+
+  <section id="reviewSec" class="wrap sec" hidden><h2>What customers say</h2><div id="reviews" class="reviews"></div></section>
+
+  <section id="faq" class="wrap sec">
+    <h2>Payment, shipping and returns</h2>
+    <details open><summary>Payment</summary><p>We accept prepaid orders only. After you send your order on WhatsApp, we share UPI payment details. Your order is confirmed once payment is received. Cash on delivery is not available.</p></details>
+    <details><summary>Shipping</summary><p>Orders are dispatched after payment confirmation. Delivery time depends on your location and is shared on WhatsApp when we confirm your order.</p></details>
+    <details><summary>Returns and refunds</summary><p>If your item arrives damaged or incorrect, message us on WhatsApp within 48 hours of delivery with photos or an unboxing video. We will arrange a replacement or refund.</p></details>
+  </section>
+</main>
+
+<footer id="contact">
+  <div class="wrap fgrid">
+    <div><img class="flogo" src="images/logo.jpeg" alt="Trend To Cart"><p>Find what's worth it.</p></div>
+    <div><h4>Contact</h4><p><a id="fMail" href="#"></a></p><p><a id="fPhone" href="#"></a></p><p><a id="fWa" href="#" target="_blank" rel="noopener">Chat on WhatsApp</a></p></div>
+    <div><h4>Follow us</h4><p><a id="sIg" target="_blank" rel="noopener">Instagram</a></p><p><a id="sFb" target="_blank" rel="noopener">Facebook</a></p><p><a id="sYt" target="_blank" rel="noopener">YouTube</a></p></div>
+  </div>
+  <p class="copy">&copy; <span id="yr"></span> Trend To Cart. All rights reserved.</p>
+</footer>
+
+<a id="waFloat" class="wafloat" href="#" target="_blank" rel="noopener" aria-label="Chat on WhatsApp">
+  <svg viewBox="0 0 32 32" width="28" height="28" aria-hidden="true"><path fill="#fff" d="M16 3C9.4 3 4 8.3 4 14.9c0 2.3.7 4.5 1.9 6.3L4 29l8-2.1c1.2.6 2.600.9 4 .9 6.600 0 12-5.300 12-11.900C28 8.300 22.600 3 16 3zm0 21.800c-1.300 0-2.500-.3-3.600-.9l-.5-.3-4.700 1.200 1.300-4.600-.3-.5a9.700 9.700 0 0 1-1.500-5.200C6.700 9.900 10.900 5.700 16 5.700s9.300 4.200 9.300 9.300-4.200 9.800-9.300 9.800zm5.400-7.300c-.3-.1-1.700-.9-2-.9-.3-.1-.5-.1-.7.100-.2.300-.8.900-.9 1.100-.2.200-.3.200-.6.100-.3-.1-1.200-.5-2.300-1.400-.8-.8-1.400-1.700-1.600-2-.2-.3 0-.4.100-.6l.4-.5c.1-.2.200-.3.300-.5.100-.2 0-.4 0-.5l-.9-2.200c-.2-.6-.5-.5-.7-.5h-.6c-.2 0-.5.100-.8.400-.3.300-1 1-1 2.400s1 2.800 1.200 3c.1.200 2 3.100 4.900 4.300 2.900 1.200 2.900.8 3.400.8.500 0 1.700-.7 1.900-1.400.2-.7.200-1.200.2-1.400-.1-.1-.3-.2-.6-.3z"/></svg>
+</a>
+
+<dialog id="cartDlg" class="side"><div class="dh"><h3>Your cart</h3><button class="x" data-close aria-label="Close">&times;</button></div><div id="cartBody"></div></dialog>
+
+<dialog id="coDlg"><div class="dh"><h3>Checkout</h3><button class="x" data-close aria-label="Close">&times;</button></div>
+  <div id="coSummary" class="sum"></div>
+  <form id="coForm">
+    <label>Full name<input name="name" required autocomplete="name"></label>
+    <label>Phone number<input name="phone" type="tel" required pattern="[0-9+ ]{10,15}" title="Enter a valid phone number" autocomplete="tel"></label>
+    <label>Delivery address<textarea name="address" rows="3" required autocomplete="street-address"></textarea></label>
+    <button class="btn wa" type="submit">Send order on WhatsApp</button>
+    <p class="note">Prepaid orders only. We will share UPI payment details on WhatsApp.</p>
+  </form>
+</dialog>
+
+<dialog id="detailDlg" class="wide"><button class="x abs" data-close aria-label="Close">&times;</button><div id="detailBody"></div></dialog>
+<div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+<script>
+/* =====================================================
+   TREND TO CART - store settings and products
+   This is the only file you need to edit to add products.
+   ===================================================== */
+
+const STORE = {
+  name: "Trend To Cart",
+  tagline: "Find what's worth it",
+  whatsapp: "918610601717",          // country code + number, no + or spaces
+  email: "trendtocartofficial@gmail.com",
+  phone: "+91 8610601717",
+  imageFolder: "images/",            // product images are read from this folder
+  logo: "images/logo.jpeg",
+  social: {
+    instagram: "https://www.instagram.com/trendtocart_",
+    facebook: "https://www.facebook.com/profile.php?id=61595599118036",
+    youtube: "https://youtube.com/@trend-tocart?si=UNp-BOsPCME01uMo"
+  },
+  // Add real customer reviews here. While this list is empty, the reviews section stays hidden.
+  // Example: { name: "Priya, Madurai", text: "Fast delivery and the product was exactly as shown." }
+  testimonials: []
+};
+
+/* =====================================================
+   PRODUCTS
+   - id: unique, never repeat (used in the WhatsApp message and share link)
+   - images: file names inside the images folder, exactly as saved (capital letters matter)
+   - originalPrice: optional, shows the crossed-out price and the % off badge
+   - tags: first tag shows as a badge. Use "Best Seller" to show the product in the Best sellers row
+   - variants: optional, for size/colour, e.g. variants: [{ label: "Small", price: 499 }, { label: "Large", price: 599 }]
+   To add a product, copy one block, paste it after a comma, and change the details.
+   ===================================================== */
+
+const PRODUCTS = [
+  {
+    id: "TTC-001",
+    name: "Crawling Crab",
+    category: "Toy",
+    price: 499,
+    originalPrice: 899,
+    shortDesc: "Crawling Crab Toy",
+    fullDesc: "Crawling Crab Toy",
+    inStock: true,
+    images: ["TTC-001-1.webp"],
+    tags: ["Best Seller"]
+  }
+];
+
+</script>
+<script>
+(function () {
+  const S = STORE, P = PRODUCTS;
+  const $ = s => document.querySelector(s);
+  const money = n => '₹' + Number(n).toLocaleString('en-IN');
+  const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+
+  // Placeholder shown when an image file is missing from the images folder
+  const PH = 'data:image/svg+xml,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="400" height="400"><rect width="400" height="400" fill="#fff1f5"/><text x="200" y="210" font-family="sans-serif" font-size="22" fill="#ff2d75" text-anchor="middle">Image coming soon</text></svg>');
+  document.addEventListener('error', e => {
+    const t = e.target;
+    if (t.tagName === 'IMG' && !t.dataset.f) { t.dataset.f = 1; t.src = PH; }
+  }, true);
+
+  const state = { cat: 'All', q: '', sort: 'default' };
+  let cart = [], pending = null;
+  try { cart = JSON.parse(localStorage.getItem('ttc_cart') || '[]'); } catch (e) {}
+  const save = () => { try { localStorage.setItem('ttc_cart', JSON.stringify(cart)); } catch (e) {} };
+
+  const find = id => P.find(p => p.id === id);
+  const imgSrc = (p, i) => S.imageFolder + ((p.images && p.images[i || 0]) || 'missing.jpg');
+  const vPrice = (p, v) => { const o = (p.variants || []).find(x => x.label === v); return o && o.price != null ? o.price : p.price; };
+  const discount = p => p.originalPrice > p.price ? Math.round(100 - p.price / p.originalPrice * 100) : 0;
+  const cats = [...new Set(P.map(p => p.category))];
+
+  const varSelect = p => (p.variants || []).length
+    ? `<select class="var" aria-label="Choose option">${p.variants.map(v => `<option value="${esc(v.label)}">${esc(v.label)}${v.price != null ? ' - ' + money(v.price) : ''}</option>`).join('')}</select>`
+    : '';
+  const actions = p => p.inStock
+    ? '<button class="btn ghost" data-act="add">Add to cart</button><button class="btn" data-act="buy">Buy now</button>'
+    : '<button class="btn" disabled>Out of stock</button>';
+
+  function card(p) {
+    const off = discount(p);
+    return `<article class="card" data-id="${esc(p.id)}">
+<button class="thumb" data-act="view" aria-label="View ${esc(p.name)}"><img loading="lazy" src="${esc(imgSrc(p))}" alt="${esc(p.name)}">${p.tags && p.tags[0] ? `<span class="tag">${esc(p.tags[0])}</span>` : ''}${off ? `<span class="off">${off}% off</span>` : ''}</button>
+<div class="info"><p class="cat">${esc(p.category)}</p><h3>${esc(p.name)}</h3><p class="sd">${esc(p.shortDesc)}</p>
+<p class="price"><b>${money(p.price)}</b>${off ? `<s>${money(p.originalPrice)}</s>` : ''}</p>${varSelect(p)}<div class="acts">${actions(p)}</div></div></article>`;
+  }
+
+  function renderShop() {
+    const q = state.q.trim().toLowerCase();
+    const list = P.filter(p => (state.cat === 'All' || p.category === state.cat) &&
+      (!q || [p.name, p.category, p.shortDesc, (p.tags || []).join(' ')].join(' ').toLowerCase().includes(q)));
+    if (state.sort === 'low') list.sort((a, b) => a.price - b.price);
+    if (state.sort === 'high') list.sort((a, b) => b.price - a.price);
+    if (state.sort === 'az') list.sort((a, b) => a.name.localeCompare(b.name));
+    $('#grid').innerHTML = list.map(card).join('');
+    $('#empty').hidden = list.length > 0;
+    $('#chips').innerHTML = ['All', ...cats].map(c => `<button class="chip" aria-pressed="${c === state.cat}" data-cat="${esc(c)}">${esc(c)}</button>`).join('');
+  }
+
+  function init() {
+    $('#catGrid').innerHTML = cats.map(c => `<button class="cattile" data-cat="${esc(c)}" data-go>${esc(c)}<small>${P.filter(p => p.category === c).length} product${P.filter(p => p.category === c).length === 1 ? '' : 's'}</small></button>`).join('');
+    const best = P.filter(p => (p.tags || []).includes('Best Seller'));
+    $('#featured').hidden = !best.length;
+    $('#featGrid').innerHTML = best.map(card).join('');
+
+    const reviews = (S.testimonials || []);
+    $('#reviewSec').hidden = !reviews.length;
+    $('#reviews').innerHTML = reviews.map(t => `<blockquote><p>${esc(t.text)}</p><cite>${esc(t.name)}</cite></blockquote>`).join('');
+
+    const wa = 'https://wa.me/' + S.whatsapp;
+    $('#fMail').href = 'mailto:' + S.email; $('#fMail').textContent = S.email;
+    $('#fPhone').href = 'tel:' + S.phone.replace(/\s/g, ''); $('#fPhone').textContent = S.phone;
+    $('#fWa').href = wa; $('#heroWa').href = wa; $('#waFloat').href = wa;
+    $('#sIg').href = S.social.instagram; $('#sFb').href = S.social.facebook; $('#sYt').href = S.social.youtube;
+    $('#yr').textContent = new Date().getFullYear();
+
+    cart = cart.filter(i => find(i.id)); save();
+    renderShop(); updateCount();
+
+    const m = location.hash.match(/^#p-(.+)$/);
+    if (m && find(decodeURIComponent(m[1]))) openDetail(decodeURIComponent(m[1]));
+  }
+
+  function toast(msg) {
+    const t = $('#toast'); t.textContent = msg; t.classList.add('show');
+    clearTimeout(toast.t); toast.t = setTimeout(() => t.classList.remove('show'), 1800);
+  }
+  function updateCount() { $('#cartCount').textContent = cart.reduce((n, i) => n + i.qty, 0); }
+
+  function add(id, variant) {
+    const it = cart.find(i => i.id === id && i.variant === variant);
+    if (it) it.qty++; else cart.push({ id, variant, qty: 1 });
+    save(); updateCount(); toast('Added to cart');
+  }
+
+  function renderCart() {
+    const body = $('#cartBody');
+    if (!cart.length) { body.innerHTML = '<p class="empty">Your cart is empty. Add a product to get started.</p>'; return; }
+    const total = cart.reduce((s, i) => s + vPrice(find(i.id), i.variant) * i.qty, 0);
+    body.innerHTML = cart.map((i, n) => {
+      const p = find(i.id);
+      return `<div class="line"><img src="${esc(imgSrc(p))}" alt=""><div><b>${esc(p.name)}</b>${i.variant ? `<small>${esc(i.variant)}</small>` : ''}<span class="qty"><button data-q="-1" data-n="${n}" aria-label="Decrease quantity">-</button>${i.qty}<button data-q="1" data-n="${n}" aria-label="Increase quantity">+</button></span></div><div><b>${money(vPrice(p, i.variant) * i.qty)}</b><br><button class="link" data-rm="${n}">Remove</button></div></div>`;
+    }).join('') + `<div class="total"><span>Total</span><span>${money(total)}</span></div><button class="btn wa" data-act="checkout">Checkout</button>`;
+  }
+
+  function openDetail(id) {
+    const p = find(id);
+    $('#detailBody').innerHTML = `<div class="det" data-id="${esc(p.id)}"><div><img class="main" src="${esc(imgSrc(p))}" alt="${esc(p.name)}"><div class="thumbs">${(p.images || []).length > 1 ? p.images.map((f, i) => `<img src="${esc(imgSrc(p, i))}" alt="Photo ${i + 1}" class="${i ? '' : 'on'}">`).join('') : ''}</div></div>
+<div><p class="cat">${esc(p.category)}</p><h3>${esc(p.name)}</h3><p class="price"><b>${money(p.price)}</b>${discount(p) ? `<s>${money(p.originalPrice)}</s>` : ''}</p><p class="fd">${esc(p.fullDesc)}</p>${varSelect(p)}<div class="acts">${actions(p)}</div></div></div>`;
+    $('#detailDlg').showModal();
+  }
+
+  function checkout(items) {
+    pending = items;
+    const total = items.reduce((s, i) => s + vPrice(find(i.id), i.variant) * i.qty, 0);
+    $('#coSummary').innerHTML = items.map(i => `<p><span>${esc(find(i.id).name)}${i.variant ? ' (' + esc(i.variant) + ')' : ''} x${i.qty}</span><span>${money(vPrice(find(i.id), i.variant) * i.qty)}</span></p>`).join('') + `<p><b>Total</b><b>${money(total)}</b></p>`;
+    ['#cartDlg', '#detailDlg'].forEach(d => $(d).close());
+    $('#coDlg').showModal();
+  }
+
+  $('#coForm').addEventListener('submit', e => {
+    e.preventDefault();
+    const f = new FormData(e.target), base = location.origin + location.pathname;
+    let total = 0;
+    const lines = pending.map((i, n) => {
+      const p = find(i.id), pr = vPrice(p, i.variant) * i.qty; total += pr;
+      return `${n + 1}. ${p.name}${i.variant ? ' (' + i.variant + ')' : ''}\n   ID: ${p.id} | Qty: ${i.qty} | ${money(pr)}\n   Link: ${base}#p-${encodeURIComponent(p.id)}`;
+    });
+    const msg = `Hi ${S.name}, I would like to place an order.\n\n*Order details*\n${lines.join('\n')}\n\n*Total: ${money(total)}* (prepaid order)\n\n*Customer details*\nName: ${f.get('name')}\nPhone: ${f.get('phone')}\nAddress: ${f.get('address')}`;
+    window.open('https://wa.me/' + S.whatsapp + '?text=' + encodeURIComponent(msg), '_blank');
+    if (pending === cart) { cart = []; save(); updateCount(); }
+    $('#coDlg').close(); e.target.reset();
+  });
+
+  document.addEventListener('click', e => {
+    const t = e.target;
+    const dlg = t.closest('dialog');
+
+    // Click on the dark backdrop closes the dialog
+    if (t.tagName === 'DIALOG') {
+      const r = t.getBoundingClientRect();
+      if (e.clientX < r.left || e.clientX > r.right || e.clientY < r.top || e.clientY > r.bottom) t.close();
+    }
+    if (t.closest('[data-close]')) { dlg.close(); return; }
+
+    const catBtn = t.closest('[data-cat]');
+    if (catBtn) {
+      state.cat = catBtn.dataset.cat; renderShop();
+      if (catBtn.hasAttribute('data-go')) $('#shop').scrollIntoView();
+      return;
+    }
+    if (t.closest('#cartBtn')) { renderCart(); $('#cartDlg').showModal(); return; }
+
+    const th = t.closest('.thumbs img');
+    if (th) {
+      document.querySelector('.det .main').src = th.src;
+      document.querySelectorAll('.thumbs img').forEach(i => i.classList.toggle('on', i === th));
+      return;
+    }
+    const q = t.closest('[data-q]');
+    if (q) { const i = cart[+q.dataset.n]; i.qty += +q.dataset.q; if (i.qty < 1) cart.splice(+q.dataset.n, 1); save(); updateCount(); renderCart(); return; }
+    const rm = t.closest('[data-rm]');
+    if (rm) { cart.splice(+rm.dataset.rm, 1); save(); updateCount(); renderCart(); return; }
+
+    const a = t.closest('[data-act]'); if (!a) return;
+    if (a.dataset.act === 'checkout') { checkout(cart); return; }
+    const box = a.closest('[data-id]'), id = box.dataset.id, v = box.querySelector('.var');
+    const variant = v ? v.value : '';
+    if (a.dataset.act === 'view') openDetail(id);
+    if (a.dataset.act === 'add') add(id, variant);
+    if (a.dataset.act === 'buy') checkout([{ id, variant, qty: 1 }]);
+  });
+
+  // Price follows the selected option
+  document.addEventListener('change', e => {
+    if (e.target.matches('.var')) {
+      const box = e.target.closest('[data-id]');
+      box.querySelector('.price b').textContent = money(vPrice(find(box.dataset.id), e.target.value));
+    }
+  });
+  $('#search').addEventListener('input', e => { state.q = e.target.value; renderShop(); });
+  $('#sort').addEventListener('change', e => { state.sort = e.target.value; renderShop(); });
+  init();
+})();
+
+</script>
+</body>
+</html>
